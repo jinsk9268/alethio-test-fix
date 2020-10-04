@@ -10,6 +10,11 @@ const GlobalStyle = createGlobalStyle`
     box-sizing:border-box;
   }
 
+  body {
+    font-size:16px;
+    font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+
   a{
     text-decoration:none;
     color:inherit;
