@@ -1,16 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { MAIN_IMG } from 'config';
 import styled from 'styled-components';
 
 const MainService = () => {
+  // history link
+  const history = useHistory();
+
   return (
     <MainServiceBox>
       <MainOrderBox>
         <MainImg alt='curiosus mom image' src={MAIN_IMG} />
-        <Order>
-          <Link to='/mypage/order'>주문하기</Link>
-        </Order>
+        <Order onClick={() => history.push('/mypage/order')}>주문하기</Order>
       </MainOrderBox>
     </MainServiceBox>
   );
@@ -44,14 +45,6 @@ const Order = styled.button`
   border-radius: 5px;
   font-size: 16px;
   letter-spacing: 0.5px;
-
-  a {
-    display: inline-flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-  }
 
   @media ${(props) => props.theme.mobile} {
     width: 90%;
