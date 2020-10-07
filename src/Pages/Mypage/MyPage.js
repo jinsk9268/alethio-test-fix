@@ -1,13 +1,10 @@
 import React, { useState, useEffect, memo } from 'react';
-import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import OrderItem from './Components/OrderItem';
 import { API } from 'config';
 import styled from 'styled-components';
 
 const MyPage = () => {
-  // 라우터 history
-  const history = useHistory();
-
   // data fetching
   const [orderData, setOrderData] = useState({});
   const [pageNum, setPageNUm] = useState(0);
@@ -40,13 +37,7 @@ const MyPage = () => {
         {orderData.content &&
           orderData.content.map((item) => {
             return (
-              <ItemBox
-                onClick={() => history.push(`/mypage/order/${item.id}`)}
-                key={item.id}
-              >
-                <ItemId>{item.id}</ItemId>
-                <ItemName>{item.itemName}</ItemName>
-              </ItemBox>
+              <OrderItem id={item.id} itemName={item.itemName} key={item.id} />
             );
           })}
       </ItemList>
@@ -90,32 +81,6 @@ const ItemList = styled.section`
   padding: 10px;
 `;
 
-const ItemBox = styled.article`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 15px 0;
-  width: 450px;
-  height: 50px;
-  border: 3px solid pink;
-  cursor: pointer;
-
-  @media ${(props) => props.theme.mobile} {
-    width: 100%;
-  }
-`;
-
-const ItemId = styled.div`
-  width: 30%;
-  border-right: 3px solid pink;
-  text-align: center;
-`;
-
-const ItemName = styled.div`
-  width: 70%;
-  text-align: center;
-`;
-
 const PageNumBox = styled.div`
   margin: 0 auto;
   width: 450px;
@@ -123,6 +88,10 @@ const PageNumBox = styled.div`
   ol {
     display: flex;
     justify-content: center;
+  }
+
+  @media ${(props) => props.theme.mobile} {
+    width: 100%;
   }
 `;
 

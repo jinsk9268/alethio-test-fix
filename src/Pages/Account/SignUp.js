@@ -44,7 +44,7 @@ const SignUp = () => {
   const emailChangeBorder = useEmailFocus(emailFocus);
 
   // 라우터 history
-  const mainLink = useHistory();
+  const history = useHistory();
 
   // 비밀번호 길이 유효성
   const regPassword = /^.{8,15}$/;
@@ -92,7 +92,7 @@ const SignUp = () => {
           });
           setToken(signUpRes.data.token);
           setMenu('');
-          mainLink.push('/');
+          history.push('/');
         } catch (error) {
           alert('에러가 발생했습니다');
         }

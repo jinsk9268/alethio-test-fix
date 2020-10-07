@@ -11,7 +11,7 @@ const Login = () => {
   const [menu, setMenu] = useContext(MenuContext);
 
   // 라우터 history
-  const mainLink = useHistory();
+  const history = useHistory();
 
   const [loginInputs, setLoginInputs] = useState({
     email: '',
@@ -36,7 +36,7 @@ const Login = () => {
       if (loginRes.status === 200) {
         setToken(loginRes.data.token);
         setMenu('');
-        mainLink.push('/');
+        history.push('/');
       }
     } catch (error) {
       alert('비밀번호를 다시 확인해주세요');
