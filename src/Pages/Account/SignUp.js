@@ -1,6 +1,14 @@
-import React, { useState, useRef, useCallback, useEffect, memo } from 'react';
-import axios from 'axios';
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useContext,
+  memo,
+} from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { TokenContext, MenuContext } from 'Context/Context';
 import { API } from 'config';
 import styled from 'styled-components';
 
@@ -13,27 +21,26 @@ const useEmailFocus = (ref) => {
     const onBlur = () => setEmailState(false);
     ref.current.addEventListener('focus', onFocus);
     ref.current.addEventListener('blur', onBlur);
-
-    // return () => {
-    //   ref.current.removeEventListener('focus', onFocus);
-    //   ref.current.removeEventListener('blur', onBlur);
-    // };
   }, [ref]);
 
   return emailState;
 };
 
-// 비밀번호 길이 유효성
-const regPassword = /^.{8,15}$/;
-
 const SignUp = () => {
+  // context
+  const [token, setToken] = useContext(TokenContext);
+  const [menu, setMenu] = useContext(MenuContext);
+  console.log('token>>>', token);
+
   // 이메일 포커스
   const emailFocus = useRef();
   const emailChangeBorder = useEmailFocus(emailFocus);
-  console.log('emailChangeBorder>>>', emailChangeBorder);
 
   // 라우터 history
   const mainLink = useHistory();
+
+  // 비밀번호 길이 유효성
+  const regPassword = /^.{8,15}$/;
 
   const [signUpInputs, setSignUpInputs] = useState({
     email: '',
@@ -49,7 +56,7 @@ const SignUp = () => {
     setSignUpInputs({ ...signUpInputs, [name]: value });
   };
 
-  const changeEmailBorder = () => {
+  const changeEmailBorder = useCallback(() => {
     const changeResult = emailChangeBorder
       ? true
       : email.includes('@' && '.com')
@@ -58,18 +65,7 @@ const SignUp = () => {
       ? true
       : false;
     return changeResult;
-  };
-
-  console.log('changeEmailBorder>>>', changeEmailBorder());
-
-  // const chanageSignUpInput = useCallback(
-  //   (e) => {
-  //     console.log('chanageSignUpInput');
-  //     const { name, value } = e.target;
-  //     setSignUpInputs({ ...signUpInputs, [name]: value });
-  //   },
-  //   [signUpInputs],
-  // );
+  }, [email, emailChangeBorder]);
 
   // 회원가입
   const clickSignUp = () => {
@@ -87,10 +83,11 @@ const SignUp = () => {
             password: password,
             mobile: mobile,
           });
-          console.log(res);
+          setToken(res.data.token);
+          setMenu('');
           mainLink.push('/');
         } catch (error) {
-          console.log(error);
+          alert('에러가 발생했습니다', error);
         }
       };
       isSignUp();
@@ -106,28 +103,6 @@ const SignUp = () => {
       : emailFocus.current.focus();
     emailFocus.current.focus();
   };
-
-  // const clickSignUp = useCallback(() => {
-  //   console.log('clickSignUp');
-  //   if (
-  //     email.includes('@' && '.com') &&
-  //     regPassword.test(password) &&
-  //     password === passwordCheck &&
-  //     mobile
-  //   ) {
-  //     mainLink.push('/');
-  //   }
-  //   !email.includes('@' && '.com')
-  //     ? alert('이메일을 다시 입력하세요')
-  //     : !regPassword.test(password)
-  //     ? alert('비밀번호를 확인해주세요')
-  //     : !(password === passwordCheck)
-  //     ? alert('비밀번호 일치 여부를 확인해주세요')
-  //     : !mobile
-  //     ? alert('핸드폰을 확인해주세요')
-  //     : emailFocus.current.focus();
-  //   emailFocus.current.focus();
-  // }, [email, mainLink, mobile, password, passwordCheck, regPassword]);
 
   return (
     <SignUpBox>

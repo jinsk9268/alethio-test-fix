@@ -1,6 +1,6 @@
 import React, { useState, useEffect, memo } from 'react';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import { API } from 'config';
 import styled from 'styled-components';
 

@@ -1,17 +1,32 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { TokenContext, MenuContext } from 'Context/Context';
 import { MAIN_IMG } from 'config';
 import styled from 'styled-components';
 
 const MainService = () => {
+  // token
+  const [token, setToken] = useContext(TokenContext);
+  const [menu, setMenu] = useContext(MenuContext);
+
   // history link
   const history = useHistory();
+
+  const checkToken = () => {
+    if (token) {
+      alert('주문에 성공했습니다');
+    } else {
+      alert('로그인을 해주세요');
+      setMenu('회원가입');
+      history.push('/sign-up');
+    }
+  };
 
   return (
     <MainServiceBox>
       <MainOrderBox>
         <MainImg alt='curiosus mom image' src={MAIN_IMG} />
-        <Order onClick={() => history.push('/mypage/order')}>주문하기</Order>
+        <Order onClick={() => checkToken()}>주문하기</Order>
       </MainOrderBox>
     </MainServiceBox>
   );

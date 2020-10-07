@@ -1,59 +1,95 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useContext, useCallback, memo } from 'react';
 import { useHistory } from 'react-router-dom';
+import { TokenContext, MenuContext } from 'Context/Context';
 import styled from 'styled-components';
 import { BEBE_LOGO } from 'config';
 
 const Header = () => {
+  // context
+  const [token, setToken] = useContext(TokenContext);
+  const [menu, setMenu] = useContext(MenuContext);
+
   // history link
   const history = useHistory();
   console.log(history.location.pathname);
 
-  const [currentMenu, setCurrentMenu] = useState('');
+  const changeCurrentMenu = useCallback(
+    (menu) => {
+      setMenu(menu);
+    },
+    [setMenu],
+  );
 
-  // const changeCurrentMenu = useCallback((menu) => {
-  //   setCurrentMenu(menu);
-  // }, []);
-
-  const changeCurrentMenu = (menu) => {
-    setCurrentMenu(menu);
-  };
+  const clickMenu = useCallback(
+    (menu, url) => {
+      switch (menu) {
+        case '':
+          changeCurrentMenu(menu);
+          history.push(url);
+          break;
+        case '회원가입':
+          changeCurrentMenu(menu);
+          history.push(url);
+          break;
+        case '로그인':
+          changeCurrentMenu(menu);
+          history.push(url);
+          break;
+        case '로그아웃':
+          setToken('');
+          changeCurrentMenu('');
+          alert('로그아웃 되었습니다');
+          history.push('url');
+          break;
+        case '마이페이지':
+          if (token) {
+            changeCurrentMenu(menu);
+            history.push(url);
+          } else {
+            alert('로그인을 해주세요');
+            changeCurrentMenu('회원가입');
+            history.push('/sign-up');
+          }
+          break;
+        default:
+          changeCurrentMenu('');
+          history.push('/');
+          break;
+      }
+    },
+    [changeCurrentMenu, history, setToken, token],
+  );
 
   return (
     <HeaderBox>
       <Logo
         alt='bebe logo'
         src={BEBE_LOGO}
-        onClick={() => {
-          changeCurrentMenu('');
-          history.push('/');
-        }}
+        onClick={() => clickMenu('', '/')}
       />
       <HeaderNav>
         <ul className='pc-nav'>
           <MenuLi
-            onClick={() => {
-              changeCurrentMenu('회원가입');
-              history.push('/sign-up');
-            }}
-            changeColor={currentMenu === '회원가입' ? true : false}
+            onClick={() => clickMenu('회원가입', '/sign-up')}
+            changeColor={menu === '회원가입' ? true : false}
           >
             회원가입
           </MenuLi>
+          {token ? (
+            <MenuLi onClick={() => clickMenu('로그아웃', '/logout')}>
+              로그아웃
+            </MenuLi>
+          ) : (
+            <MenuLi
+              onClick={() => clickMenu('로그인', '/login')}
+              changeColor={menu === '로그인' ? true : false}
+            >
+              로그인
+            </MenuLi>
+          )}
           <MenuLi
-            onClick={() => {
-              changeCurrentMenu('로그인');
-              history.push('/login');
-            }}
-            changeColor={currentMenu === '로그인' ? true : false}
-          >
-            로그인
-          </MenuLi>
-          <MenuLi
-            onClick={() => {
-              changeCurrentMenu('마이페이지');
-              history.push('/mypage/order');
-            }}
-            changeColor={currentMenu === '마이페이지' ? true : false}
+            onClick={() => clickMenu('마이페이지', '/mypage/order')}
+            changeColor={menu === '마이페이지' ? true : false}
           >
             마이페이지
           </MenuLi>
@@ -66,8 +102,7 @@ const Header = () => {
   );
 };
 
-// export default memo(Header);
-export default Header;
+export default memo(Header);
 
 const HeaderBox = styled.header`
   display: flex;

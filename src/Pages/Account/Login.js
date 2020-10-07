@@ -1,10 +1,15 @@
-import React, { useState, memo } from 'react';
-import axios from 'axios';
+import React, { useState, useContext, memo } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { TokenContext, MenuContext } from 'Context/Context';
 import { API } from 'config';
 import styled from 'styled-components';
 
 const Login = () => {
+  // context
+  const [token, setToken] = useContext(TokenContext);
+  const [menu, setMenu] = useContext(MenuContext);
+
   // history link
   const mainLink = useHistory();
 
@@ -29,8 +34,9 @@ const Login = () => {
           email: email,
           password: password,
         });
-        console.log(res);
         if (res.status === 200) {
+          setToken(res.data.token);
+          setMenu('');
           mainLink.push('/');
         }
       } catch (error) {
@@ -41,7 +47,6 @@ const Login = () => {
     isLogin();
   };
 
-  console.log(loginInputs);
   return (
     <LoginBox>
       <AccountInputBox>
