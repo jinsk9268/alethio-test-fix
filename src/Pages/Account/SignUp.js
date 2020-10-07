@@ -21,7 +21,15 @@ const useEmailFocus = (ref) => {
     const onBlur = () => setEmailState(false);
     ref.current.addEventListener('focus', onFocus);
     ref.current.addEventListener('blur', onBlur);
-  }, [ref]);
+
+    // unmount시 이벤트 제거 처리
+    return () => {
+      ref.current.removeEventListener('focus', onFocus);
+      ref.current.removeEventListener('blur', onBlur);
+    };
+    // email만 확인
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return emailState;
 };
@@ -30,7 +38,6 @@ const SignUp = () => {
   // context
   const [token, setToken] = useContext(TokenContext);
   const [menu, setMenu] = useContext(MenuContext);
-  console.log('token>>>', token);
 
   // 이메일 포커스
   const emailFocus = useRef();
@@ -77,17 +84,17 @@ const SignUp = () => {
     ) {
       const isSignUp = async () => {
         try {
-          const res = await axios.post(`${API}/sign-up`, {
+          const signUpRes = await axios.post(`${API}/sign-up`, {
             headers: { 'Content-Type': 'application/json' },
             email: email,
             password: password,
             mobile: mobile,
           });
-          setToken(res.data.token);
+          setToken(signUpRes.data.token);
           setMenu('');
           mainLink.push('/');
         } catch (error) {
-          alert('에러가 발생했습니다', error);
+          alert('에러가 발생했습니다');
         }
       };
       isSignUp();

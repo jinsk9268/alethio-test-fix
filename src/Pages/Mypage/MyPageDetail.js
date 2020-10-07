@@ -5,7 +5,7 @@ import { API } from 'config';
 import styled from 'styled-components';
 
 const MyPageDetail = () => {
-  // useParams
+  // urlParams 사용
   const id = useParams().id;
 
   const [orderItem, setOrderItem] = useState({});
@@ -13,12 +13,12 @@ const MyPageDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${API}/order/${id}`, {
+        const orderIdRes = await axios.get(`${API}/order/${id}`, {
           headers: { 'Content-Type': 'application/json' },
         });
-        setOrderItem(res.data);
-      } catch (e) {
-        console.log(e);
+        setOrderItem(orderIdRes.data);
+      } catch (error) {
+        alert('에러가 발생했습니다. 다시 접속해주세요');
       }
     };
     fetchData();

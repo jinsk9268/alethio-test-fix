@@ -1,18 +1,18 @@
 import React, { useState, createContext, memo } from 'react';
 
-export const TokenContext = createContext(null);
 export const MenuContext = createContext(null);
+export const TokenContext = createContext(null);
 
 const ContextProvider = (props) => {
   const [token, setToken] = useState('');
   const [menu, setMenu] = useState('');
 
   return (
-    <TokenContext.Provider value={[token, setToken]}>
-      <MenuContext.Provider value={[menu, setMenu]}>
+    <MenuContext.Provider value={[menu, setMenu]}>
+      <TokenContext.Provider value={[token, setToken]}>
         {props.children}
-      </MenuContext.Provider>
-    </TokenContext.Provider>
+      </TokenContext.Provider>
+    </MenuContext.Provider>
   );
 };
 

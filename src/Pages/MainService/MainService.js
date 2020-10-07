@@ -9,7 +9,7 @@ const MainService = () => {
   const [token, setToken] = useContext(TokenContext);
   const [menu, setMenu] = useContext(MenuContext);
 
-  // history link
+  // 라우터 history
   const history = useHistory();
 
   const checkToken = () => {

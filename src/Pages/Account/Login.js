@@ -10,7 +10,7 @@ const Login = () => {
   const [token, setToken] = useContext(TokenContext);
   const [menu, setMenu] = useContext(MenuContext);
 
-  // history link
+  // 라우터 history
   const mainLink = useHistory();
 
   const [loginInputs, setLoginInputs] = useState({
@@ -26,25 +26,21 @@ const Login = () => {
   };
 
   // 로그인
-  const clickLogin = () => {
-    const isLogin = async () => {
-      try {
-        const res = await axios.post(`${API}/login`, {
-          headers: { 'Content-Type': 'application/json' },
-          email: email,
-          password: password,
-        });
-        if (res.status === 200) {
-          setToken(res.data.token);
-          setMenu('');
-          mainLink.push('/');
-        }
-      } catch (error) {
-        console.log(error);
-        alert('비밀번호를 다시 확인해주세요');
+  const clickLogin = async () => {
+    try {
+      const loginRes = await axios.post(`${API}/login`, {
+        headers: { 'Content-Type': 'application/json' },
+        email: email,
+        password: password,
+      });
+      if (loginRes.status === 200) {
+        setToken(loginRes.data.token);
+        setMenu('');
+        mainLink.push('/');
       }
-    };
-    isLogin();
+    } catch (error) {
+      alert('비밀번호를 다시 확인해주세요');
+    }
   };
 
   return (

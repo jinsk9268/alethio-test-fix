@@ -5,7 +5,7 @@ import { API } from 'config';
 import styled from 'styled-components';
 
 const MyPage = () => {
-  // history link
+  // 라우터 history
   const history = useHistory();
 
   // data fetching
@@ -15,12 +15,12 @@ const MyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${API}/order?page=${pageNum}`, {
+        const orderRes = await axios.get(`${API}/order?page=${pageNum}`, {
           headers: { 'Content-Type': 'application/json' },
         });
-        setOrderData(res.data);
+        setOrderData(orderRes.data);
       } catch (error) {
-        console.log(error);
+        alert('에러가 발생했습니다. 다시 접속해주세요');
       }
     };
     fetchData();

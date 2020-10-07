@@ -9,9 +9,8 @@ const Header = () => {
   const [token, setToken] = useContext(TokenContext);
   const [menu, setMenu] = useContext(MenuContext);
 
-  // history link
+  // 라우터 history
   const history = useHistory();
-  console.log(history.location.pathname);
 
   const changeCurrentMenu = useCallback(
     (menu) => {
@@ -68,7 +67,7 @@ const Header = () => {
         onClick={() => clickMenu('', '/')}
       />
       <HeaderNav>
-        <ul className='pc-nav'>
+        <PcNav>
           <MenuLi
             onClick={() => clickMenu('회원가입', '/sign-up')}
             changeColor={menu === '회원가입' ? true : false}
@@ -93,10 +92,10 @@ const Header = () => {
           >
             마이페이지
           </MenuLi>
-        </ul>
-        <div className='mobile-nav'>
+        </PcNav>
+        <MobileNav>
           <i className='fas fa-bars'></i>
-        </div>
+        </MobileNav>
       </HeaderNav>
     </HeaderBox>
   );
@@ -108,7 +107,7 @@ const HeaderBox = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 15px;
   height: 60px;
 `;
 
@@ -117,23 +116,23 @@ const Logo = styled.img`
   cursor: pointer;
 `;
 
-const HeaderNav = styled.nav`
-  .pc-nav {
-    display: flex;
+const HeaderNav = styled.nav``;
 
-    @media ${(props) => props.theme.mobile} {
-      display: none;
-    }
-  }
+const PcNav = styled.div`
+  display: flex;
 
-  .mobile-nav {
+  @media ${(props) => props.theme.mobile} {
     display: none;
+  }
+`;
 
-    @media ${(props) => props.theme.mobile} {
-      display: inline-block;
-      font-size: 24px;
-      cursor: pointer;
-    }
+const MobileNav = styled.div`
+  display: none;
+
+  @media ${(props) => props.theme.mobile} {
+    display: inline-block;
+    font-size: 24px;
+    cursor: pointer;
   }
 `;
 
