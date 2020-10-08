@@ -1,4 +1,4 @@
-# Alrthio
+# Alethio
 
 ---
 
