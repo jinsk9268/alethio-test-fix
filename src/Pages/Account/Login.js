@@ -1,12 +1,17 @@
-import React, { useState, memo } from 'react';
-import axios from 'axios';
+import React, { useState, useContext, memo } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { TokenContext, MenuContext } from 'Context/Context';
 import { API } from 'config';
 import styled from 'styled-components';
 
 const Login = () => {
-  // history link
-  const mainLink = useHistory();
+  // context
+  const [token, setToken] = useContext(TokenContext);
+  const [menu, setMenu] = useContext(MenuContext);
+
+  // 라우터 history
+  const history = useHistory();
 
   const [loginInputs, setLoginInputs] = useState({
     email: '',
@@ -21,27 +26,23 @@ const Login = () => {
   };
 
   // 로그인
-  const clickLogin = () => {
-    const isLogin = async () => {
-      try {
-        const res = await axios.post(`${API}/login`, {
-          headers: { 'Content-Type': 'application/json' },
-          email: email,
-          password: password,
-        });
-        console.log(res);
-        if (res.status === 200) {
-          mainLink.push('/');
-        }
-      } catch (error) {
-        console.log(error);
-        alert('비밀번호를 다시 확인해주세요');
+  const clickLogin = async () => {
+    try {
+      const loginRes = await axios.post(`${API}/login`, {
+        headers: { 'Content-Type': 'application/json' },
+        email: email,
+        password: password,
+      });
+      if (loginRes.status === 200) {
+        setToken(loginRes.data.token);
+        setMenu('');
+        history.push('/');
       }
-    };
-    isLogin();
+    } catch (error) {
+      alert('비밀번호를 다시 확인해주세요');
+    }
   };
 
-  console.log(loginInputs);
   return (
     <LoginBox>
       <AccountInputBox>

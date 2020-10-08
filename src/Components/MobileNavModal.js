@@ -2,9 +2,8 @@ import React, { useContext, useCallback, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { MenuContext, MobileNavContext, TokenContext } from 'Context/Context';
 import styled from 'styled-components';
-import { BEBE_LOGO } from 'config';
 
-const Header = () => {
+const MobileNavModal = () => {
   // context
   const [menu, setMenu] = useContext(MenuContext);
   const [navModalShow, setNavModalShow] = useContext(MobileNavContext);
@@ -12,6 +11,7 @@ const Header = () => {
 
   // 라우터 history
   const history = useHistory();
+  console.log(history);
 
   const changeCurrentMenu = useCallback(
     (menu) => {
@@ -25,29 +25,35 @@ const Header = () => {
       switch (menu) {
         case '':
           changeCurrentMenu(menu);
+          // setNavModalShow(false);
           history.push(url);
           break;
         case '회원가입':
           changeCurrentMenu(menu);
-          history.replace(url);
+          // setNavModalShow(false);
+          history.push(url);
           break;
         case '로그인':
           changeCurrentMenu(menu);
+          // setNavModalShow(false);
           history.push(url);
           break;
         case '로그아웃':
           setToken('');
           changeCurrentMenu('');
           alert('로그아웃 되었습니다');
+          // setNavModalShow(false);
           history.push(url);
           break;
         case '마이페이지':
           if (token) {
             changeCurrentMenu(menu);
+            // setNavModalShow(false);
             history.push(url);
           } else {
             alert('로그인을 해주세요');
             changeCurrentMenu('회원가입');
+            // setNavModalShow(false);
             history.push('/sign-up');
           }
           break;
@@ -61,14 +67,12 @@ const Header = () => {
   );
 
   return (
-    <HeaderBox>
-      <Logo
-        alt='bebe logo'
-        src={BEBE_LOGO}
-        onClick={() => clickMenu('', '/')}
-      />
-      <HeaderNav>
-        <PcNav>
+    <MobileNav>
+      <ModalClose>
+        <i className='fas fa-times' onClick={() => setNavModalShow(false)}></i>
+      </ModalClose>
+      <MobileMenuList>
+        <MenuList>
           <MenuLi
             onClick={() => clickMenu('회원가입', '/sign-up')}
             changeColor={menu === '회원가입' ? true : false}
@@ -93,52 +97,51 @@ const Header = () => {
           >
             마이페이지
           </MenuLi>
-        </PcNav>
-        <MobileNav onClick={() => setNavModalShow(true)}>
-          <i className='fas fa-bars'></i>
-        </MobileNav>
-      </HeaderNav>
-    </HeaderBox>
+        </MenuList>
+      </MobileMenuList>
+    </MobileNav>
   );
 };
 
-export default memo(Header);
+export default memo(MobileNavModal);
 
-const HeaderBox = styled.header`
+const MobileNav = styled.nav`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: pink;
+`;
+
+const ModalClose = styled.div`
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  height: 60px;
-`;
+  justify-content: flex-end;
 
-const Logo = styled.img`
-  height: 40px;
-  cursor: pointer;
-`;
-
-const HeaderNav = styled.nav``;
-
-const PcNav = styled.ul`
-  display: flex;
-
-  @media ${(props) => props.theme.mobile} {
-    display: none;
-  }
-`;
-
-const MobileNav = styled.div`
-  display: none;
-
-  @media ${(props) => props.theme.mobile} {
-    display: inline-block;
-    font-size: 24px;
+  i {
+    padding: 10px;
+    font-size: 30px;
     cursor: pointer;
   }
 `;
 
+const MobileMenuList = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const MenuList = styled.ul`
+  width: 100%;
+`;
+
 const MenuLi = styled.li`
-  padding-left: 15px;
+  margin: 10px 0;
+  padding: 20px;
+  background: white;
+  border-radius: 5px;
   color: ${(props) => (props.changeColor ? 'pink' : 'black')};
+  text-align: center;
   cursor: pointer;
 `;
