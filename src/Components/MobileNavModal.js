@@ -25,45 +25,45 @@ const MobileNavModal = () => {
       switch (menu) {
         case '':
           changeCurrentMenu(menu);
-          setNavModalShow(false);
-          // history.push(url);
+          // setNavModalShow(false);
+          history.push(url);
           break;
         case '회원가입':
           changeCurrentMenu(menu);
-          setNavModalShow(false);
-          // history.push(url);
+          // setNavModalShow(false);
+          history.push(url);
           break;
         case '로그인':
           changeCurrentMenu(menu);
-          setNavModalShow(false);
-          // history.push(url);
+          // setNavModalShow(false);
+          history.push(url);
           break;
         case '로그아웃':
           setToken('');
           changeCurrentMenu('');
           alert('로그아웃 되었습니다');
-          setNavModalShow(false);
-          // history.push('url');
+          // setNavModalShow(false);
+          history.push(url);
           break;
         case '마이페이지':
           if (token) {
             changeCurrentMenu(menu);
-            setNavModalShow(false);
-            // history.push(url);
+            // setNavModalShow(false);
+            history.push(url);
           } else {
             alert('로그인을 해주세요');
             changeCurrentMenu('회원가입');
-            setNavModalShow(false);
-            // history.push('/sign-up');
+            // setNavModalShow(false);
+            history.push('/sign-up');
           }
           break;
         default:
           changeCurrentMenu('');
-          // history.push('/');
+          history.push('/');
           break;
       }
     },
-    [changeCurrentMenu, setNavModalShow, setToken, token],
+    [changeCurrentMenu, history, setToken, token],
   );
 
   return (
@@ -72,7 +72,7 @@ const MobileNavModal = () => {
         <i className='fas fa-times' onClick={() => setNavModalShow(false)}></i>
       </ModalClose>
       <MobileMenuList>
-        <PcNav>
+        <MenuList>
           <MenuLi
             onClick={() => clickMenu('회원가입', '/sign-up')}
             changeColor={menu === '회원가입' ? true : false}
@@ -97,7 +97,7 @@ const MobileNavModal = () => {
           >
             마이페이지
           </MenuLi>
-        </PcNav>
+        </MenuList>
       </MobileMenuList>
     </MobileNav>
   );
@@ -132,7 +132,7 @@ const MobileMenuList = styled.div`
   margin-top: 20px;
 `;
 
-const PcNav = styled.ul`
+const MenuList = styled.ul`
   width: 100%;
 `;
 

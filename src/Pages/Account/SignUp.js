@@ -12,7 +12,7 @@ import { TokenContext, MenuContext } from 'Context/Context';
 import { API } from 'config';
 import styled from 'styled-components';
 
-// focus test
+// 이메일 focus blur 시 처리
 const useEmailFocus = (ref) => {
   const [emailState, setEmailState] = useState(false);
 

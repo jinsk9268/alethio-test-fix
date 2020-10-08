@@ -1,5 +1,7 @@
 import React, { useState, createContext, memo } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import MobileNavModal from 'Components/MobileNavModal';
+
 export const MenuContext = createContext(null);
 export const MobileNavContext = createContext(null);
 export const TokenContext = createContext(null);
@@ -13,8 +15,10 @@ const ContextProvider = (props) => {
     <MenuContext.Provider value={[menu, setMenu]}>
       <MobileNavContext.Provider value={[navModalShow, setNavModalShow]}>
         <TokenContext.Provider value={[token, setToken]}>
-          {props.children}
-          {navModalShow && <MobileNavModal />}
+          <Router>
+            {navModalShow && <MobileNavModal />}
+            {props.children}
+          </Router>
         </TokenContext.Provider>
       </MobileNavContext.Provider>
     </MenuContext.Provider>
