@@ -25,45 +25,46 @@ const MobileNavModal = () => {
       switch (menu) {
         case '':
           changeCurrentMenu(menu);
-          // setNavModalShow(false);
+          setNavModalShow(false);
           history.push(url);
           break;
         case '회원가입':
           changeCurrentMenu(menu);
-          // setNavModalShow(false);
+          setNavModalShow(false);
           history.push(url);
           break;
         case '로그인':
           changeCurrentMenu(menu);
-          // setNavModalShow(false);
+          setNavModalShow(false);
           history.push(url);
           break;
         case '로그아웃':
           setToken('');
           changeCurrentMenu('');
           alert('로그아웃 되었습니다');
-          // setNavModalShow(false);
+          setNavModalShow(false);
           history.push(url);
           break;
         case '마이페이지':
           if (token) {
             changeCurrentMenu(menu);
-            // setNavModalShow(false);
+            setNavModalShow(false);
             history.push(url);
           } else {
             alert('로그인을 해주세요');
             changeCurrentMenu('회원가입');
-            // setNavModalShow(false);
+            setNavModalShow(false);
             history.push('/sign-up');
           }
           break;
         default:
           changeCurrentMenu('');
+          setNavModalShow(false);
           history.push('/');
           break;
       }
     },
-    [changeCurrentMenu, history, setToken, token],
+    [changeCurrentMenu, history, setNavModalShow, setToken, token],
   );
 
   return (
