@@ -2,6 +2,7 @@ import React, { useContext, useCallback, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { MenuContext, MobileNavContext, TokenContext } from 'Context/Context';
 import styled from 'styled-components';
+import { BEBE_LOGO } from 'config';
 
 const MobileNavModal = () => {
   // context
@@ -11,7 +12,6 @@ const MobileNavModal = () => {
 
   // 라우터 history
   const history = useHistory();
-  console.log(history);
 
   const changeCurrentMenu = useCallback(
     (menu) => {
@@ -73,6 +73,11 @@ const MobileNavModal = () => {
         <i className='fas fa-times' onClick={() => setNavModalShow(false)}></i>
       </ModalClose>
       <MobileMenuList>
+        <Logo
+          src={BEBE_LOGO}
+          alt='babyface 로고'
+          onClick={() => clickMenu('', '/')}
+        />
         <MenuList>
           <MenuLi
             onClick={() => clickMenu('회원가입', '/sign-up')}
@@ -128,9 +133,14 @@ const ModalClose = styled.div`
 `;
 
 const MobileMenuList = styled.div`
-  display: flex;
-  justify-content: center;
   margin-top: 20px;
+`;
+
+const Logo = styled.img`
+  display: block;
+  margin: 0 auto 30px auto;
+  width: 60%;
+  cursor: pointer;
 `;
 
 const MenuList = styled.ul`
