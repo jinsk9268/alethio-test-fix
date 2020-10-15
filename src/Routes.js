@@ -21,7 +21,7 @@ const Routes = () => {
           <Route exact path='/' component={MainService} />
           <Route exact path='/sign-up' component={SignUp} />
           <Route exact path='/login' component={Login} />
-          <Route exat path='/logout' component={MainService} />
+          <Route exact path='/logout' component={MainService} />
           <Route exact path='/mypage/order' component={MyPage} />
           <Route exact path='/mypage/order/:id' component={MyPageDetail} />
           <Redirect from='*' to='/' />

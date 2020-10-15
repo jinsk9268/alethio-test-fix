@@ -29,7 +29,7 @@ const Header = () => {
           break;
         case '회원가입':
           changeCurrentMenu(menu);
-          history.replace(url);
+          history.push(url);
           break;
         case '로그인':
           changeCurrentMenu(menu);
