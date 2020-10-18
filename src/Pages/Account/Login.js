@@ -2,7 +2,7 @@ import React, { useState, useContext, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { TokenContext, MenuContext } from 'Context/Context';
-import { API } from 'config';
+import { API, HEADERS } from 'config';
 import styled from 'styled-components';
 
 const Login = () => {
@@ -29,7 +29,7 @@ const Login = () => {
   const clickLogin = async () => {
     try {
       const loginRes = await axios.post(`${API}/login`, {
-        headers: { 'Content-Type': 'application/json' },
+        HEADERS,
         email: email,
         password: password,
       });
@@ -67,7 +67,7 @@ const Login = () => {
         </InputBox>
       </AccountInputBox>
       <AcountButtonBox>
-        <Button onClick={() => clickLogin()}>로그인 하기</Button>
+        <Button onClick={() => clickLogin()}>로그인</Button>
       </AcountButtonBox>
     </LoginBox>
   );

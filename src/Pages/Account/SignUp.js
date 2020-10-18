@@ -9,7 +9,7 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { TokenContext, MenuContext } from 'Context/Context';
-import { API } from 'config';
+import { API, HEADERS } from 'config';
 import styled from 'styled-components';
 
 // 이메일 focus blur 시 처리
@@ -85,7 +85,7 @@ const SignUp = () => {
       const isSignUp = async () => {
         try {
           const signUpRes = await axios.post(`${API}/sign-up`, {
-            headers: { 'Content-Type': 'application/json' },
+            HEADERS,
             email: email,
             password: password,
             mobile: mobile,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, memo } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { API } from 'config';
+import { API, HEADERS } from 'config';
 import styled from 'styled-components';
 
 const MyPageDetail = () => {
@@ -14,7 +14,7 @@ const MyPageDetail = () => {
     const fetchData = async () => {
       try {
         const orderIdRes = await axios.get(`${API}/order/${id}`, {
-          headers: { 'Content-Type': 'application/json' },
+          HEADERS,
         });
         setOrderItem(orderIdRes.data);
       } catch (error) {

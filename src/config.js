@@ -10,3 +10,6 @@ export const MAIN_IMG =
 
 // API Export
 export const API = 'http://106.10.53.116:8099';
+
+// HEADERS Export
+export const HEADERS = { headers: { 'Content-Type': 'application/json' } };
