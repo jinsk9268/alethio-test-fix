@@ -1,7 +1,8 @@
-import React, { useState, useContext, memo } from 'react';
+import React, { useContext, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { TokenContext, MenuContext } from 'Context/Context';
+import useInputs from './Hooks/useInputs';
 import { API, HEADERS } from 'config';
 import styled from 'styled-components';
 
@@ -13,17 +14,12 @@ const Login = () => {
   // 라우터 history
   const history = useHistory();
 
-  const [loginInputs, setLoginInputs] = useState({
+  const [state, changeInputValue] = useInputs({
     email: '',
     password: '',
   });
 
-  const { email, password } = loginInputs;
-
-  const changeLoginInput = (e) => {
-    const { name, value } = e.target;
-    setLoginInputs({ ...loginInputs, [name]: value });
-  };
+  const { email, password } = state;
 
   // 로그인
   const clickLogin = async () => {
@@ -53,7 +49,7 @@ const Login = () => {
             type='text'
             name='email'
             placeholder='이메일'
-            onChange={changeLoginInput}
+            onChange={changeInputValue}
           />
         </InputBox>
         <InputBox>
@@ -62,7 +58,7 @@ const Login = () => {
             type='password'
             name='password'
             placeholder='비밀번호'
-            onChange={changeLoginInput}
+            onChange={changeInputValue}
           />
         </InputBox>
       </AccountInputBox>

@@ -9,6 +9,7 @@ import React, {
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { TokenContext, MenuContext } from 'Context/Context';
+import useInputs from './Hooks/useInputs';
 import { API, HEADERS } from 'config';
 import styled from 'styled-components';
 
@@ -49,19 +50,14 @@ const SignUp = () => {
   // 비밀번호 길이 유효성
   const regPassword = /^.{8,15}$/;
 
-  const [signUpInputs, setSignUpInputs] = useState({
+  const [state, changeInputValue] = useInputs({
     email: '',
     password: '',
     passwordCheck: '',
     mobile: '',
   });
 
-  const { email, password, passwordCheck, mobile } = signUpInputs;
-
-  const chanageSignUpInput = (e) => {
-    const { name, value } = e.target;
-    setSignUpInputs({ ...signUpInputs, [name]: value });
-  };
+  const { email, password, passwordCheck, mobile } = state;
 
   const changeEmailBorder = useCallback(() => {
     const changeResult = emailChangeBorder
@@ -122,7 +118,7 @@ const SignUp = () => {
             name='email'
             placeholder='이메일'
             ref={emailFocus}
-            onChange={chanageSignUpInput}
+            onChange={changeInputValue}
             emailBorder={changeEmailBorder()}
           />
         </InputBox>
@@ -132,7 +128,7 @@ const SignUp = () => {
             type='password'
             name='password'
             placeholder='비밀번호'
-            onChange={chanageSignUpInput}
+            onChange={changeInputValue}
             passwordBorder={password.length}
           />
         </InputBox>
@@ -142,7 +138,7 @@ const SignUp = () => {
             type='password'
             name='passwordCheck'
             placeholder='비밀번호 확인'
-            onChange={chanageSignUpInput}
+            onChange={changeInputValue}
           />
         </InputBox>
         <InputBox>
@@ -151,7 +147,7 @@ const SignUp = () => {
             type='text'
             name='mobile'
             placeholder='휴대폰 번호를 입력해주세요'
-            onChange={chanageSignUpInput}
+            onChange={changeInputValue}
           />
         </InputBox>
       </AccountInputBox>
