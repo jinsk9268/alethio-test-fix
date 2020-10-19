@@ -1,8 +1,8 @@
 import React, { useContext, useCallback, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { MenuContext, MobileNavContext, TokenContext } from 'Context/Context';
-import styled from 'styled-components';
 import { BEBE_LOGO } from 'config';
+import styled from 'styled-components';
 
 const MobileNavModal = () => {
   // context
