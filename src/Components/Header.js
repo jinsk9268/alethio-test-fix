@@ -1,63 +1,56 @@
 import React, { useContext, useCallback, memo } from 'react';
 import { useHistory } from 'react-router-dom';
-import { MenuContext, MobileNavContext, TokenContext } from 'Context/Context';
+import { ContextDispatch } from 'Context/Context';
 import { BEBE_LOGO } from 'config';
 import styled from 'styled-components';
 
 const Header = () => {
   // context
-  const [menu, setMenu] = useContext(MenuContext);
-  const [navModalShow, setNavModalShow] = useContext(MobileNavContext);
-  const [token, setToken] = useContext(TokenContext);
+  const [state, dispatch] = useContext(ContextDispatch);
 
   // 라우터 history
   const history = useHistory();
-
-  const changeCurrentMenu = useCallback(
-    (menu) => {
-      setMenu(menu);
-    },
-    [setMenu],
-  );
 
   const clickMenu = useCallback(
     (menu, url) => {
       switch (menu) {
         case '':
-          changeCurrentMenu(menu);
+          dispatch({ type: 'CHANGE_MENU', menu });
           history.push(url);
           break;
         case '회원가입':
-          changeCurrentMenu(menu);
+          dispatch({ type: 'CHANGE_MENU', menu });
           history.push(url);
           break;
         case '로그인':
-          changeCurrentMenu(menu);
+          dispatch({ type: 'CHANGE_MENU', menu });
           history.push(url);
           break;
         case '로그아웃':
-          setToken('');
-          changeCurrentMenu('');
+          dispatch({ type: 'REMOVE_TOKEN' });
+          dispatch({ type: 'CHANGE_MENU', menu: '' });
           alert('로그아웃 되었습니다');
           history.push(url);
           break;
         case '마이페이지':
-          if (token) {
-            changeCurrentMenu(menu);
-            history.push(url);
-          } else {
-            alert('로그인을 해주세요');
-            changeCurrentMenu('회원가입');
-            history.push('/sign-up');
-          }
+          state.token
+            ? (function () {
+                dispatch({ type: 'CHANGE_MENU', menu });
+                history.push(url);
+              })()
+            : (function () {
+                alert('로그인을 해주세요');
+                dispatch({ type: 'CHANGE_MENU', menu: '회원가입' });
+                history.push('/sign-up');
+              })();
           break;
         default:
-          changeCurrentMenu('');
+          dispatch({ type: 'CHANGE_MENU', menu: '' });
           history.push('/');
           break;
       }
     },
-    [changeCurrentMenu, history, setToken, token],
+    [dispatch, history, state.token],
   );
 
   return (
@@ -71,30 +64,30 @@ const Header = () => {
         <PcNav>
           <MenuLi
             onClick={() => clickMenu('회원가입', '/sign-up')}
-            changeColor={menu === '회원가입' ? true : false}
+            changeColor={state.menu === '회원가입' ? true : false}
           >
             회원가입
           </MenuLi>
-          {token ? (
+          {state.token ? (
             <MenuLi onClick={() => clickMenu('로그아웃', '/logout')}>
               로그아웃
             </MenuLi>
           ) : (
             <MenuLi
               onClick={() => clickMenu('로그인', '/login')}
-              changeColor={menu === '로그인' ? true : false}
+              changeColor={state.menu === '로그인' ? true : false}
             >
               로그인
             </MenuLi>
           )}
           <MenuLi
             onClick={() => clickMenu('마이페이지', '/mypage/order')}
-            changeColor={menu === '마이페이지' ? true : false}
+            changeColor={state.menu === '마이페이지' ? true : false}
           >
             마이페이지
           </MenuLi>
         </PcNav>
-        <MobileNav onClick={() => setNavModalShow(true)}>
+        <MobileNav onClick={() => dispatch({ type: 'SHOW_MODAL' })}>
           <i className='fas fa-bars'></i>
         </MobileNav>
       </HeaderNav>

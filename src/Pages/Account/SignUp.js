@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { TokenContext, MenuContext } from 'Context/Context';
+import { ContextDispatch } from 'Context/Context';
 import useInputs from './Hooks/useInputs';
 import { API, HEADERS } from 'config';
 import styled from 'styled-components';
@@ -37,8 +37,7 @@ const useEmailFocus = (ref) => {
 
 const SignUp = () => {
   // context
-  const [token, setToken] = useContext(TokenContext);
-  const [menu, setMenu] = useContext(MenuContext);
+  const [state, dispatch] = useContext(ContextDispatch);
 
   // 이메일 포커스
   const emailFocus = useRef();
@@ -50,14 +49,14 @@ const SignUp = () => {
   // 비밀번호 길이 유효성
   const regPassword = /^.{8,15}$/;
 
-  const [state, changeInputValue] = useInputs({
+  const [inputState, changeInputValue] = useInputs({
     email: '',
     password: '',
     passwordCheck: '',
     mobile: '',
   });
 
-  const { email, password, passwordCheck, mobile } = state;
+  const { email, password, passwordCheck, mobile } = inputState;
 
   const changeEmailBorder = useCallback(() => {
     const changeResult = emailChangeBorder
@@ -86,8 +85,8 @@ const SignUp = () => {
             password: password,
             mobile: mobile,
           });
-          setToken(signUpRes.data.token);
-          setMenu('');
+          dispatch({ type: 'SAVE_TOKEN', token: signUpRes.data.token });
+          dispatch({ type: 'CHANGE_MENU', menu: '' });
           history.push('/');
         } catch (error) {
           alert('에러가 발생했습니다');

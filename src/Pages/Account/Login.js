@@ -1,25 +1,24 @@
 import React, { useContext, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { TokenContext, MenuContext } from 'Context/Context';
+import { ContextDispatch } from 'Context/Context';
 import useInputs from './Hooks/useInputs';
 import { API, HEADERS } from 'config';
 import styled from 'styled-components';
 
 const Login = () => {
   // context
-  const [token, setToken] = useContext(TokenContext);
-  const [menu, setMenu] = useContext(MenuContext);
+  const [state, dispatch] = useContext(ContextDispatch);
 
   // 라우터 history
   const history = useHistory();
 
-  const [state, changeInputValue] = useInputs({
+  const [inputState, changeInputValue] = useInputs({
     email: '',
     password: '',
   });
 
-  const { email, password } = state;
+  const { email, password } = inputState;
 
   // 로그인
   const clickLogin = async () => {
@@ -30,8 +29,8 @@ const Login = () => {
         password: password,
       });
       if (loginRes.status === 200) {
-        setToken(loginRes.data.token);
-        setMenu('');
+        dispatch({ type: 'SAVE_TOKEN', token: loginRes.data.token });
+        dispatch({ type: 'CHANGE_MENU', menu: '' });
         history.push('/');
       }
     } catch (error) {

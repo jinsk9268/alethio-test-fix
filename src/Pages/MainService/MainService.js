@@ -1,25 +1,24 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { TokenContext, MenuContext } from 'Context/Context';
+import { ContextDispatch } from 'Context/Context';
 import { MAIN_IMG } from 'config';
 import styled from 'styled-components';
 
 const MainService = () => {
   // token
-  const [token, setToken] = useContext(TokenContext);
-  const [menu, setMenu] = useContext(MenuContext);
+  const [state, dispatch] = useContext(ContextDispatch);
 
   // 라우터 history
   const history = useHistory();
 
   const checkToken = () => {
-    if (token) {
-      alert('주문에 성공했습니다');
-    } else {
-      alert('로그인을 해주세요');
-      setMenu('회원가입');
-      history.push('/sign-up');
-    }
+    state.token
+      ? alert('주문에 성공했습니다')
+      : (function () {
+          alert('로그인을 해주세요');
+          dispatch({ type: 'CHANGE_MENU', menu: '회원가입' });
+          history.push('/sign-up');
+        })();
   };
 
   return (

@@ -1,20 +1,20 @@
 import { useReducer } from 'react';
 
-const inputReducer = (state, action) => {
+const inputReducer = (initialState, action) => {
   return {
-    ...state,
+    ...initialState,
     [action.name]: action.value,
   };
 };
 
 const useInputs = (initialState) => {
-  const [state, dispatch] = useReducer(inputReducer, initialState);
+  const [inputState, dispatch] = useReducer(inputReducer, initialState);
 
   const changeInputValue = (e) => {
     dispatch(e.target);
   };
 
-  return [state, changeInputValue];
+  return [inputState, changeInputValue];
 };
 
 export default useInputs;
