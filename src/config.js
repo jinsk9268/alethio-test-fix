@@ -1,15 +1,15 @@
-// Header Import
+// Header - logo Import
 import bebeLogo from 'Images/bebeLogo.png';
 
-// Header Export
+// Header - logo Export
 export const BEBE_LOGO = bebeLogo;
 
-// Main Export
+// Main - img Export
 export const MAIN_IMG =
   'https://ajmhupzumlev1437281.cdn.ntruss.com/home/main01.png';
 
 // API Export
 export const API = 'http://106.10.53.116:8099';
 
-// axios default headers Export
+// API - axios default headers Export
 export const HEADERS = { headers: { 'Content-Type': 'application/json' } };

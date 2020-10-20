@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const OrderItem = ({ id, itemName }) => {
-  // urlParams 사용
+  // 라우터 history
   const history = useHistory();
 
   return (

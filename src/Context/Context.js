@@ -1,4 +1,4 @@
-import React, { useState, createContext, memo } from 'react';
+import React, { createContext, useState, memo } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import MobileNavModal from 'Components/MobileNavModal';
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import ContextProvider from 'Context/Context';
-import { ThemeProvider } from 'styled-components';
-import theme from 'Styles/theme';
-import GlobalStyle from 'Styles/GlobalStyle';
 import Header from 'Components/Header';
 import MainService from 'Pages/MainService/MainService';
 import SignUp from 'Pages/Account/SignUp';
 import Login from 'Pages/Account/Login';
 import MyPage from 'Pages/Mypage/MyPage';
 import MyPageDetail from 'Pages/Mypage/MyPageDetail';
+import { ThemeProvider } from 'styled-components';
+import theme from 'Styles/theme';
+import GlobalStyle from 'Styles/GlobalStyle';
 
 const Routes = () => {
   return (
