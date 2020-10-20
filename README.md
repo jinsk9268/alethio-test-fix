@@ -5,7 +5,8 @@
 ## 상태관리 : Context API 사용
 
 - Token
-- menu
+- Menu
+- Modal
 
 ---
 
