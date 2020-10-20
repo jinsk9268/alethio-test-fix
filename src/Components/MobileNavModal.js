@@ -81,7 +81,6 @@ const MobileNavModal = () => {
           >
             회원가입
           </MenuLi>
-          {/* 원래 token */}
           {state.token ? (
             <MenuLi onClick={() => clickMenu('로그아웃', '/logout')}>
               로그아웃

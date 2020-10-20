@@ -5,7 +5,7 @@ import { MAIN_IMG } from 'config';
 import styled from 'styled-components';
 
 const MainService = () => {
-  // token
+  // context
   const [state, dispatch] = useContext(ContextDispatch);
 
   // 라우터 history
