@@ -1,10 +1,15 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, useContext, memo } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { API, HEADERS } from 'config';
+import { ContextDispatch } from 'Context/Context';
+import Loading from './Components/Loding';
+import { API, HEADERS, URI } from 'config';
 import styled from 'styled-components';
 
 const MyPageDetail = () => {
+  // context
+  const [state, dispatch] = useContext(ContextDispatch);
+
   // urlParams 사용
   const id = useParams().id;
 
@@ -13,26 +18,32 @@ const MyPageDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const orderIdRes = await axios.get(`${API}/order/${id}`, {
+        dispatch({ type: 'LOADING_TRUE' });
+        const orderIdRes = await axios.get(`${API}${URI.ORDER}/${id}`, {
           HEADERS,
         });
         setOrderItem(orderIdRes.data);
+        dispatch({ type: 'LOADING_FALSE' });
       } catch (error) {
         alert('에러가 발생했습니다. 다시 접속해주세요');
       }
     };
     fetchData();
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <DetailBox>
       <DetailTitle>주문 상세</DetailTitle>
-      <ItemList>
-        <ItemBox>
-          <ItemId>{orderItem.id}</ItemId>
-          <ItemName>{orderItem.itemName}</ItemName>
-        </ItemBox>
-      </ItemList>
+      {state.loading ? (
+        <Loading />
+      ) : (
+        <ItemList>
+          <ItemBox>
+            <ItemId>{orderItem.id}</ItemId>
+            <ItemName>{orderItem.itemName}</ItemName>
+          </ItemBox>
+        </ItemList>
+      )}
     </DetailBox>
   );
 };

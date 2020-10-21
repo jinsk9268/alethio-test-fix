@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ContextDispatch } from 'Context/Context';
-import { MAIN_IMG } from 'config';
+import { MAIN_IMG, URL } from 'config';
 import styled from 'styled-components';
 
 const MainService = () => {
@@ -16,8 +16,8 @@ const MainService = () => {
       ? alert('주문에 성공했습니다')
       : (function () {
           alert('로그인을 해주세요');
-          dispatch({ type: 'CHANGE_MENU', menu: '회원가입' });
-          history.push('/sign-up');
+          dispatch({ type: 'CHANGE_MENU', menu: '로그인' });
+          history.push(URL.LOGIN);
         })();
   };
 

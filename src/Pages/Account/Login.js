@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ContextDispatch } from 'Context/Context';
 import useInputs from './Hooks/useInputs';
-import { API, HEADERS } from 'config';
+import { API, HEADERS, URI } from 'config';
 import styled from 'styled-components';
 
 const Login = () => {
@@ -23,7 +23,7 @@ const Login = () => {
   // 로그인
   const clickLogin = async () => {
     try {
-      const loginRes = await axios.post(`${API}/login`, {
+      const loginRes = await axios.post(`${API}${URI.LOGIN}`, {
         HEADERS,
         email: email,
         password: password,

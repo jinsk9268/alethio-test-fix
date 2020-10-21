@@ -1,7 +1,7 @@
 import React, { useContext, useCallback, memo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ContextDispatch } from 'Context/Context';
-import { BEBE_LOGO } from 'config';
+import { BEBE_LOGO, URL } from 'config';
 import styled from 'styled-components';
 
 const MobileNavModal = () => {
@@ -45,15 +45,15 @@ const MobileNavModal = () => {
               })()
             : (function () {
                 alert('로그인을 해주세요');
-                dispatch({ type: 'CHANGE_MENU', menu: '회원가입' });
+                dispatch({ type: 'CHANGE_MENU', menu: '로그인' });
                 dispatch({ type: 'CLOSE_MODAL' });
-                history.push('/sign-up');
+                history.push(URL.LOGIN);
               })();
           break;
         default:
           dispatch({ type: 'CHANGE_MENU', menu: '' });
           dispatch({ type: 'CLOSE_MODAL' });
-          history.push('/');
+          history.push(URL.HOME);
           break;
       }
     },
@@ -72,29 +72,29 @@ const MobileNavModal = () => {
         <Logo
           src={BEBE_LOGO}
           alt='babyface 로고'
-          onClick={() => clickMenu('', '/')}
+          onClick={() => clickMenu('', URL.HOME)}
         />
         <MenuList>
           <MenuLi
-            onClick={() => clickMenu('회원가입', '/sign-up')}
+            onClick={() => clickMenu('회원가입', URL.SIGNUP)}
             changeColor={state.menu === '회원가입' ? true : false}
           >
             회원가입
           </MenuLi>
           {state.token ? (
-            <MenuLi onClick={() => clickMenu('로그아웃', '/logout')}>
+            <MenuLi onClick={() => clickMenu('로그아웃', URL.LOGOUT)}>
               로그아웃
             </MenuLi>
           ) : (
             <MenuLi
-              onClick={() => clickMenu('로그인', '/login')}
+              onClick={() => clickMenu('로그인', URL.LOGIN)}
               changeColor={state.menu === '로그인' ? true : false}
             >
               로그인
             </MenuLi>
           )}
           <MenuLi
-            onClick={() => clickMenu('마이페이지', '/mypage/order')}
+            onClick={() => clickMenu('마이페이지', URL.MYPAGE)}
             changeColor={state.menu === '마이페이지' ? true : false}
           >
             마이페이지

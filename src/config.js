@@ -11,5 +11,21 @@ export const MAIN_IMG =
 // API Export
 export const API = 'http://106.10.53.116:8099';
 
+export const URI = {
+  SIGNUP: '/sign-up',
+  LOGIN: '/login',
+  ORDER: '/order',
+};
+
 // API - axios default headers Export
 export const HEADERS = { headers: { 'Content-Type': 'application/json' } };
+
+// Route URL Export
+export const URL = {
+  HOME: '/',
+  SIGNUP: '/sign-up',
+  LOGIN: '/login',
+  LOGOUT: '/logout',
+  MYPAGE: '/mypage/order',
+  MYPAGEDETAIL: '/mypage/order/:id',
+};

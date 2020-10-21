@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import { ContextDispatch } from 'Context/Context';
 import useInputs from './Hooks/useInputs';
-import { API, HEADERS } from 'config';
+import { API, HEADERS, URI } from 'config';
 import styled from 'styled-components';
 
 // 이메일 focus blur 시 처리
@@ -39,14 +39,20 @@ const SignUp = () => {
   // context
   const [state, dispatch] = useContext(ContextDispatch);
 
-  // 이메일 포커스
+  // focus
   const emailFocus = useRef();
+  const passwordFocus = useRef();
+  const passwordCheckFocus = useRef();
+  const mobileFocus = useRef();
+
+  // email focus, blur
   const emailChangeBorder = useEmailFocus(emailFocus);
 
   // 라우터 history
   const history = useHistory();
 
-  // 비밀번호 길이 유효성
+  // 유효성
+  const regEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z]+)@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z]+).[a-zA-Z]{2,3}$/i;
   const regPassword = /^.{8,15}$/;
 
   const [inputState, changeInputValue] = useInputs({
@@ -61,25 +67,25 @@ const SignUp = () => {
   const changeEmailBorder = useCallback(() => {
     const changeResult = emailChangeBorder
       ? true
-      : email.includes('@' && '.com')
+      : regEmail.test(email)
       ? true
       : email.length === 0 && !emailChangeBorder
       ? true
       : false;
     return changeResult;
-  }, [email, emailChangeBorder]);
+  }, [email, emailChangeBorder, regEmail]);
 
   // 회원가입
   const clickSignUp = () => {
     if (
-      email.includes('@' && '.com') &&
+      regEmail.test(email) &&
       regPassword.test(password) &&
       password === passwordCheck &&
       mobile
     ) {
       const isSignUp = async () => {
         try {
-          const signUpRes = await axios.post(`${API}/sign-up`, {
+          const signUpRes = await axios.post(`${API}${URI.SIGNUP}`, {
             HEADERS,
             email: email,
             password: password,
@@ -94,16 +100,27 @@ const SignUp = () => {
       };
       isSignUp();
     }
-    !email.includes('@' && '.com')
-      ? alert('이메일을 다시 입력하세요')
+    !regEmail.test(email)
+      ? (function () {
+          alert('이메일을 다시 입력하세요');
+          emailFocus.current.focus();
+        })()
       : !regPassword.test(password)
-      ? alert('비밀번호를 확인해주세요')
+      ? (function () {
+          alert('비밀번호를 확인해주세요');
+          passwordFocus.current.focus();
+        })()
       : !(password === passwordCheck)
-      ? alert('비밀번호 일치 여부를 확인해주세요')
+      ? (function () {
+          alert('비밀번호 일치 여부를 확인해주세요');
+          passwordCheckFocus.current.focus();
+        })()
       : !mobile
-      ? alert('핸드폰을 확인해주세요')
+      ? (function () {
+          alert('핸드폰을 확인해주세요');
+          mobileFocus.current.focus();
+        })()
       : emailFocus.current.focus();
-    emailFocus.current.focus();
   };
 
   return (
@@ -127,6 +144,7 @@ const SignUp = () => {
             type='password'
             name='password'
             placeholder='비밀번호'
+            ref={passwordFocus}
             onChange={changeInputValue}
             passwordBorder={password.length}
           />
@@ -137,6 +155,7 @@ const SignUp = () => {
             type='password'
             name='passwordCheck'
             placeholder='비밀번호 확인'
+            ref={passwordCheckFocus}
             onChange={changeInputValue}
           />
         </InputBox>
@@ -146,6 +165,7 @@ const SignUp = () => {
             type='text'
             name='mobile'
             placeholder='휴대폰 번호를 입력해주세요'
+            ref={mobileFocus}
             onChange={changeInputValue}
           />
         </InputBox>

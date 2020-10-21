@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useMemo, memo } from 'react';
+import React, { useState, useEffect, useMemo, useContext, memo } from 'react';
 import axios from 'axios';
+import { ContextDispatch } from 'Context/Context';
+import Loading from './Components/Loding';
 import OrderItem from './Components/OrderItem';
-import { API, HEADERS } from 'config';
+import { API, HEADERS, URI } from 'config';
 import styled from 'styled-components';
 
 const getPageNumbers = (pageLength) => {
@@ -14,6 +16,9 @@ const getPageNumbers = (pageLength) => {
 };
 
 const MyPage = () => {
+  // context
+  const [state, dispatch] = useContext(ContextDispatch);
+
   // data fetching
   const [orderData, setOrderData] = useState({});
   const [pageNum, setPageNUm] = useState(0);
@@ -21,16 +26,18 @@ const MyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const orderRes = await axios.get(`${API}/order?page=${pageNum}`, {
+        dispatch({ type: 'LOADING_TRUE' });
+        const orderRes = await axios.get(`${API}${URI.ORDER}?page=${pageNum}`, {
           HEADERS,
         });
         setOrderData(orderRes.data);
+        dispatch({ type: 'LOADING_FALSE' });
       } catch (error) {
         alert('에러가 발생했습니다. 다시 접속해주세요');
       }
     };
     fetchData();
-  }, [pageNum]);
+  }, [dispatch, pageNum]);
 
   // page nation
   const pageNumbers = useMemo(() => getPageNumbers(orderData.totalPages), [
@@ -40,14 +47,22 @@ const MyPage = () => {
   return (
     <MyPageBox>
       <MyPageTitle>마이 페이지</MyPageTitle>
-      <ItemList>
-        {orderData.content &&
-          orderData.content.map((item) => {
-            return (
-              <OrderItem id={item.id} itemName={item.itemName} key={item.id} />
-            );
-          })}
-      </ItemList>
+      {state.loading ? (
+        <Loading />
+      ) : (
+        <ItemList>
+          {orderData.content &&
+            orderData.content.map((item) => {
+              return (
+                <OrderItem
+                  id={item.id}
+                  itemName={item.itemName}
+                  key={item.id}
+                />
+              );
+            })}
+        </ItemList>
+      )}
       <PageNumBox>
         <ol>
           {pageNumbers.map((num) => (

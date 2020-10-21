@@ -9,6 +9,7 @@ const ContextProvider = (props) => {
     token: '',
     menu: '',
     navModalShow: false,
+    loading: false,
   };
 
   const reducer = (state, action) => {
@@ -37,6 +38,16 @@ const ContextProvider = (props) => {
         return {
           ...state,
           navModalShow: false,
+        };
+      case 'LOADING_TRUE':
+        return {
+          ...state,
+          loading: true,
+        };
+      case 'LOADING_FALSE':
+        return {
+          ...state,
+          loading: false,
         };
       default:
         return state;
