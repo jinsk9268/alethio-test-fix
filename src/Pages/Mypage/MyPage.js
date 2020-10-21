@@ -1,8 +1,17 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, useMemo, memo } from 'react';
 import axios from 'axios';
 import OrderItem from './Components/OrderItem';
 import { API, HEADERS } from 'config';
 import styled from 'styled-components';
+
+const getPageNumbers = (pageLength) => {
+  let pageNumberArr = [];
+  for (let num = 1; num <= pageLength; num++) {
+    pageNumberArr.push(num);
+  }
+
+  return pageNumberArr;
+};
 
 const MyPage = () => {
   // data fetching
@@ -24,11 +33,9 @@ const MyPage = () => {
   }, [pageNum]);
 
   // page nation
-  const pageNumArr = [];
-
-  for (let num = 1; num <= orderData.totalPages; num++) {
-    pageNumArr.push(num);
-  }
+  const pageNumbers = useMemo(() => getPageNumbers(orderData.totalPages), [
+    orderData.totalPages,
+  ]);
 
   return (
     <MyPageBox>
@@ -43,7 +50,7 @@ const MyPage = () => {
       </ItemList>
       <PageNumBox>
         <ol>
-          {pageNumArr.map((num) => (
+          {pageNumbers.map((num) => (
             <NumLi
               key={num}
               onClick={() => {
